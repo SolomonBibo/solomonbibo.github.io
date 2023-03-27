@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gallery Shop Management</title>
+    <script src="https://kit.fontawesome.com/96fb1f6ebf.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="mangement.css">
+<script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+<script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+<script type="module"src="https://www.gstatic.com/firebasejs/9.0.2/firebase-storage.js"></script>
+
+</head>
+ 
+    <header>
+      <nav>
+        <div class="logo">
+         Management
+        </div>
+        <input type="checkbox" id="click">
+        <label for="click" class="menu-btn">
+          <i class="fas fa-bars"></i>
+        </label>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Gallery Shop</a></li>
+          <li><a href="Events.html">Events</a></li>
+          <li><a class="active" href="management.html">MGMT</a></li>
+        </ul>
+      </nav>
+    </header>
+<div id="password-popup">
+    <form id="password-form">
+      <h1>Enter Password</h1>
+      <input type="password" id="password-input" placeholder="Password" />
+      <button type="button" id="password-button">Submit</button>
+    </form>
+    </div>
+    <div id="page-content">
+
+
+    <body>
+  
+    
+      <h1 class="add"> Add Product </h1>
+
+       <form id="form">
+         <label for="name">Name:</label>
+           <input type="text" id="name" name="name" required>
+  
+            <label for="description">Description:</label>
+              <textarea id="description" name="description" required></textarea>
+  
+                 <label for="price">Price:</label>
+                   <input type="number" id="price" name="price" required>
+  
+                     <label for="image">Image:</label>
+                       <input type="file" id="image" name="image" accept="image/*" required>
+  
+                          <button type="submit" id="submit">Add Product</button>
+                            </form>
+
+  <div id="loader" style="display: none;"><p>Adding Product, please wait...</p></div>
+  <div id="success-message" style="display: none;"></div>
+
+  <h1 class="delete">Delete Product</h1>
+	<form id="delete-form">
+		<label for="productId">Product Id:</label>
+		<input type="text" id="productId" name="productId" required>
+		<button type="submit" id="delete-button">Delete Product</button>
+</form>
+
+</div>
+</body>
+
+</html>
+
+
+<script type="module">
+
+const passwordPopup = document.getElementById('password-popup');
+      const passwordForm = document.getElementById('password-form');
+      const passwordInput = document.getElementById('password-input');
+      const passwordButton = document.getElementById('password-button');
+      const pageContent = document.getElementById('page-content');
+
+      function showPasswordPopup() {
+        passwordPopup.classList.add('show');
+      }
+
+      function hidePasswordPopup() {
+        passwordPopup.classList.remove('show');
+      }
+
+      function checkPassword() {
+        const password = 'mypassword'; // replace with your password
+        const enteredPassword = passwordInput.value;
+
+        if (enteredPassword === password) {
+          hidePasswordPopup();
+          pageContent.style.display = 'block';
+        } else {
+          alert('Wrong password!');
+        }
+      }
+
+      passwordButton.addEventListener('click', checkPassword);
+
+      window.addEventListener('load', showPasswordPopup);
+
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
+import { getDatabase, ref, push, set, child, get, remove } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-storage.js";
+
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDLrlWB2tvKfIDPMeQanryBbttxx6tJJ_I",
+      authDomain: "bibo-d195d.firebaseapp.com",
+      databaseURL: "https://bibo-d195d-default-rtdb.firebaseio.com",
+      projectId: "bibo-d195d",
+      storageBucket: "bibo-d195d.appspot.com",
+      messagingSenderId: "18980246378",
+      appId: "1:18980246378:web:bdfa3d894690851b4a0b13",
+      measurementId: "G-0NHWZMJGCR"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const productsRef = ref(db, 'products');
+const storage = getStorage(app);
+const imagesRef = storageRef(storage, 'images');
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('form');
+  const loader = document.getElementById('loader');
+  const successMessage = document.getElementById('success-message');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    loader.style.display = 'block'; // Display the loader
+    successMessage.style.display = 'none'; // Hide the success message (if any)
+
+    const name = document.getElementById('name').value;
+    const description = document.getElementById('description').value;
+    const price = document.getElementById('price').value;
+    const file = document.getElementById('image').files[0];
+    const fileName = `${Date.now()}_${file.name}`;
+    const fileRef = storageRef(imagesRef, fileName);
+    await uploadBytes(fileRef, file);
+    const downloadURL = await getDownloadURL(fileRef);
+
+    const newProduct = {
+      name,
+      description,
+      price,
+      image: downloadURL,
+    };
+    await set(child(productsRef, name), newProduct);
+
+    form.reset();
+    loader.style.display = 'none'; // Hide the loader
+    successMessage.innerText = 'Success! Your product has been added.';
+    successMessage.style.display = 'block'; // Display the success message
+    setTimeout(() => {
+      successMessage.innerText = '';
+      successMessage.style.display = 'none';
+    }, 5000);
+  });
+});
+
+// ...
+
+const deleteForm = document.getElementById('delete-form');
+const deleteButton = document.getElementById('delete-button');
+
+deleteForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const productId = document.getElementById('productId').value;
+  const productRef = child(productsRef, productId);
+
+  try {
+    await remove(productRef);
+    console.log(`Product with ID ${productId} deleted successfully`);
+    alert(`Product with ID ${productId} deleted successfully`);
+    document.getElementById('productId').value = '';
+  } catch (error) {
+    console.error(`Error deleting product with ID ${productId}:`, error);
+  }
+
+});
+
+// ...
+
+</script>
+
