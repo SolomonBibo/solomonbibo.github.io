@@ -34,9 +34,10 @@
       </nav>
     </header>
   <body>
-    <div id="loader">
-      <div class="spinner"></div>
-    </div>
+
+    <div class="loader-container">
+  <div class="loader"></div>
+</div>
     
     <div id="products-list"></div>
 
@@ -60,10 +61,12 @@
       const database = getDatabase(app);
       const productsRef = ref(database, "products");
 
-      const loader = document.getElementById("loader");
+      const loaderContainer = document.querySelector('.loader-container');
+      const loader = document.querySelector('.loader');
       const productsList = document.getElementById("products-list");
 
-      loader.style.display = "block"; // show the loader
+
+      loaderContainer.style.display = "flex"; // show the loader
 
       get(productsRef).then((snapshot) => {
         const data = snapshot.val();
@@ -73,6 +76,8 @@
           const card = document.createElement("div");
           card.classList.add("card");
 
+ 
+    
           const title = document.createElement("h2");
           title.innerText = product.name;
           card.appendChild(title);
@@ -103,20 +108,16 @@ sendBtn.addEventListener("click", () => {
   const message = messageInput.value;
   console.log(`Sending message "${message}" to seller for product "${product.name}"`);
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${+256774447277}?text=${encodedMessage}`;
+  const whatsappUrl = `https://wa.me/${+256704435999}?text=${encodedMessage}`;
   window.open(whatsappUrl, '_blank');
 });
 card.appendChild(sendBtn);
 
 productsList.appendChild(card);
 
-        }
- loader.style.display = "none"; // hide the loader when done loading
-}).catch((error) => {
-  console.error(error);
-  loader.style.display = "none"; // hide the loader if an error occurs
+}
+  loaderContainer.style.display = "none"; // hide the loader container
 });
-
     </script>
     
   </body>
@@ -160,7 +161,7 @@ productsList.appendChild(card);
                   <div class="col-xl-4 col-lg-4 mb-50">
                       <div class="footer-widget">
                           <div class="footer-logo">
-                              <a href="index.html"><img src="images/4.jpeg" class="img-fluid" alt="logo"></a>
+                              <a href="index.html"><img src="images/4.jpeg" class="img-fluid" alt="kabongegeorge" </a>
                           </div>
                           <div class="footer-text">
                               <p> I love exploring different themes using the pointillism style where I put various vibrant dots or strokes of color in most of my paintings. Different hues mostly appear in contrast to one another. I am inspired by day-to-day life experiences which I depict using vibrant dots or strokes of hues on canvas. I use oil paints and acrylics on canvas to portray messages.</p>
@@ -197,7 +198,7 @@ productsList.appendChild(card);
                               <h3>Subscribe</h3>
                           </div>
                           <div class="footer-text mb-25">
-                              <p>Don’t miss to subscribe to our new feeds, kindly fill the form below.</p>
+                              <p>Don’t miss to subscribe to my new feeds, kindly fill the form below.</p>
                           </div>
                           <div class="subscribe-form">
                             <form action="mailto:georgekabonge@gmail.com" method="post">
