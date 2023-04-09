@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9219377097183768"
-     crossorigin="anonymous"></script>
-    <link rel="icon" href="images/icons8-easel-64.png">
     <title>Gallery Shop</title>
     <script src="https://kit.fontawesome.com/96fb1f6ebf.js" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9219377097183768"
+     crossorigin="anonymous"></script>
     <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="products.css">
 <script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
 <script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
@@ -42,6 +42,12 @@
 </div>
     
     <div id="products-list"></div>
+    <div class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImg">
+      </div>
+      
+    
 
     <script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
@@ -66,6 +72,9 @@
       const loaderContainer = document.querySelector('.loader-container');
       const loader = document.querySelector('.loader');
       const productsList = document.getElementById("products-list");
+      const modal = document.querySelector('.modal');
+      const modalImg = document.getElementById("modalImg");
+      const closeBtn = document.querySelector('.close');
 
 
       loaderContainer.style.display = "flex"; // show the loader
@@ -88,16 +97,68 @@
           desc.innerText = product.description;
           card.appendChild(desc);
 
+if (desc.offsetHeight > 200) { 
+  const showMoreBtn = document.createElement("button");
+  showMoreBtn.innerText = "Read More";
+  card.appendChild(showMoreBtn);
+
+  const hideDesc = () => {
+    desc.style.maxHeight = "200px"; // truncate description with CSS
+    showMoreBtn.innerText = "Read More";
+  };
+
+  const showDesc = () => {
+    desc.style.maxHeight = null; // unset height to show full description
+    showMoreBtn.innerText = "Read Less";
+  };
+
+  hideDesc(); // start with truncated description
+
+  showMoreBtn.addEventListener("click", () => {
+    if (showMoreBtn.innerText === "Read More") {
+      showDesc();
+    } else {
+      hideDesc();
+    }
+  });
+}
+
+
           const price = document.createElement("p");
           price.innerText = `Price: $${product.price}`;
           card.appendChild(price);
 
           const img = document.createElement("img");
-          img.src = product.image;
-          img.alt = product.name;
-          img.classList.add("product-img");
-          card.appendChild(img);
-        
+img.src = product.image;
+img.alt = product.name;
+img.classList.add("product-img");
+img.addEventListener("click", () => {
+  const modal = document.querySelector(".modal");
+  const modalImg = document.querySelector("#modalImg");
+  modal.style.display = "block";
+  modalImg.src = img.src;
+});
+card.appendChild(img);
+
+const modal = document.querySelector(".modal");
+const closeBtn = document.querySelector(".close");
+closeBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+
+// Open the Modal
+function openModal(img) {
+  document.getElementById("modalImg").src = img.src;
+  document.querySelector(".modal").style.display = "block";
+}
+
+// Close the Modal
+document.querySelector(".close").addEventListener("click", function() {
+  document.querySelector(".modal").style.display = "none";
+});
+
+
 
           const messageInput = document.createElement("input");
 messageInput.type = "text";
@@ -110,7 +171,7 @@ sendBtn.addEventListener("click", () => {
   const message = messageInput.value;
   console.log(`Sending message "${message}" to seller for product "${product.name}"`);
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${+256774447277}?text=${encodedMessage}`;
+  const whatsappUrl = `https://wa.me/${+256704435999}?text=${encodedMessage}`;
   window.open(whatsappUrl, '_blank');
 });
 card.appendChild(sendBtn);
@@ -238,9 +299,4 @@ productsList.appendChild(card);
       </div>
   </footer>
     </div>
-    
 </html>
-
-<!-- Start of HubSpot Embed Code -->
-  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/27171491.js"></script>
-  <!-- End of HubSpot Embed Code -->
