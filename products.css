@@ -13,7 +13,7 @@ body{
 
 nav{
   display: flex;
-  height: 80px;
+  height: 70px;
   width: 100%;
   background: #1D4350;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #A43931, #1D4350);  /* Chrome 10-25, Safari 5.1-6 */
@@ -158,8 +158,8 @@ h2{
 }
 .card p {
   font-size: 20px;
-  padding: 10px;
-  font-weight: 600;
+  padding: 5px;
+  font-weight: 400;
   width: fit-content;
   color: #ffffff;
   border-radius: 4px;
@@ -215,7 +215,7 @@ h2{
  @media screen and (max-width: 600px) {
   .products-grid {
     display: grid;
-    margin-top: 100px;
+    margin-top: 30px;
     grid-template-columns: repeat(1, 1fr); /* Adjust the number of columns as needed */
     grid-gap: 5px; /* Adjust the gap between grid items as needed */
   }
@@ -342,7 +342,9 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
-
+button:hover{
+  transform: translateY(-10%);
+}
 .loader-container {
   position: fixed;
   top: 0;
@@ -574,21 +576,25 @@ color: #878787;
 }
 
 #search-input {
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+
+   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 
 #search-button {
   margin-left: 5px;
-  padding: 10px 20px;
+  padding: 15px 20px;
   background-color: #4caf50;
   color: #fff;
+  width: fit-content;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 
 #search-button:hover {
@@ -615,13 +621,13 @@ color: #878787;
 
 
 .rotating-text-wrapper {
-  height: 10vh;
+  height: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 .rotating-text-wrapper h2 {
   font-size: 2.5em;
@@ -639,7 +645,7 @@ color: #878787;
 }
 @keyframes rotating-text-1 {
   0% {
-    transform: translateY(200%);
+    transform: translateY(100%);
   }
   33% {
     transform: translateY(100%);
@@ -684,10 +690,31 @@ color: #878787;
     opacity: 0;
   }
 }
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 600px) {
   .rotating-text-wrapper {
     font-size: 0.7rem;
   }
+  /* https://thegraph.com/en/ */
+.text-glow {
+  text-shadow: 0 0 80px rgb(192 219 255 / 35%), 0 0 32px rgb(65 120 255 / 24%);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+/* https://rareblocks.xyz/ */
+.text-gradient {
+  background: linear-gradient(to right, #30CFD0, #c43ad6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: large;
+}
+
 }
 
 #no-results-container {
