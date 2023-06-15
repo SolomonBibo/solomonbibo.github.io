@@ -7,7 +7,9 @@
 
 } 
 
-
+body{
+  background-color: #ccc;
+}
 
 nav{
   display: flex;
@@ -132,12 +134,97 @@ input[type="checkbox"]{
   margin-bottom: 10px;
   border-radius: 10px;
   margin-top: 30px;
-  width: 80%;
-  max-width: 600px;
-  margin: 30px auto;
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  margin: 10px auto;
 }
 
-  
+.products-grid {
+  min-height: 500px;
+  padding: 10px;
+  display: grid;
+  margin-top: 5%;
+  grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
+  grid-gap: 5px; /* Adjust the gap between grid items as needed */
+}
+h2{
+  font-size:25px;
+  background: #1D4350;
+  padding: 10px;
+  border-radius: 4px;
+  width: fit-content;
+  color: white;
+}
+.card p {
+  font-size: 20px;
+  padding: 10px;
+  width: fit-content;
+  color: #ffffff;
+  border-radius: 4px;
+  background: orange;  /* fallback for old browsers */
+   
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.quality {
+  display: flex;
+  align-items: center;
+  margin-top: 3px;
+}
+
+.quality i {
+  margin-right: 4px;
+  color: gold;
+}
+
+.quality span {
+  font-weight: bold;
+}
+.satisfaction {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  float: right;
+}
+
+.satisfaction i {
+  margin-right: 4px;
+  color: lightgreen;
+}
+
+.satisfaction span {
+  font-weight: bold;
+}
+.delivery {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.delivery i {
+  margin-right: 4px;
+  color: red;
+}
+
+.delivery span {
+  font-weight: bold;
+}
+
+ @media screen and (max-width: 600px) {
+  .products-grid {
+    display: grid;
+    margin-top: 100px;
+    grid-template-columns: repeat(1, 1fr); /* Adjust the number of columns as needed */
+    grid-gap: 5px; /* Adjust the gap between grid items as needed */
+  }
+  h2{
+    font-size:16px;
+  }
+  p{
+    font-size:15px;
+  }
+ }
 
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -208,8 +295,31 @@ input[type="checkbox"]{
   }
 }
 
+/* https://thegraph.com/en/ */
+.text-glow {
+  text-shadow: 0 0 80px rgb(192 219 255 / 35%), 0 0 32px rgb(65 120 255 / 24%);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
 
+/* https://rareblocks.xyz/ */
+.text-gradient {
+  background: linear-gradient(to right, #30CFD0, #c43ad6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
 
+.intro{
+background: #1D1E22;
+padding: 10px;
+color: white;
+}
 
 input[type=text] {
   width: 100%;
@@ -224,10 +334,14 @@ button {
   background-color: #4CAF50;
   color: white;
   padding: 12px 20px;
+  margin-top: 6px;
+  width: fit-content;
+  float: right;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
+
 .loader-container {
   position: fixed;
   top: 0;
@@ -261,6 +375,27 @@ button {
 
 
 
+.share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  width:fit-content;
+  margin-top: 5px;
+  float: right;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+.share i {
+  margin-right: 5px;
+}
+.share:hover {
+  background-color: #0056b3;
+}
 
 
 
@@ -426,4 +561,149 @@ color: #ff5e14;
 .footer-menu li a {
 font-size: 14px;
 color: #878787;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  margin: auto;
+  margin-top: 20px;
+  width: 90%;
+}
+
+#search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#search-button {
+  margin-left: 5px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#search-button:hover {
+  background-color: #45a049;
+}
+
+#search-button:active {
+  background-color: #3e8940;
+}
+
+.no-results-msg {
+
+  margin-top: 100%;
+  text-align: center;
+  font-size: 18px;
+  color: #ffffff;
+  margin: 20px 0;
+}
+
+
+
+
+
+
+
+.rotating-text-wrapper {
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 30px;
+}
+.rotating-text-wrapper h2 {
+  font-size: 2.5em;
+  margin: 0;
+  padding: 0.3em;
+  color: #fff;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+.rotating-text-wrapper h2:nth-child(1) {
+  background-color: lightseagreen;
+  animation-name: rotating-text-1;
+}
+@keyframes rotating-text-1 {
+  0% {
+    transform: translateY(200%);
+  }
+  33% {
+    transform: translateY(100%);
+    opacity: 1;
+  }
+  34% {
+    opacity: 0;
+  }
+}
+.rotating-text-wrapper h2:nth-child(2) {
+  background-color: tomato;
+  animation-name: rotating-text-2;
+}
+@keyframes rotating-text-2 {
+  33% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  66% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  67% {
+    opacity: 0;
+  }
+}
+.rotating-text-wrapper h2:nth-child(3) {
+  background-color: cornflowerblue;
+  animation-name: rotating-text-3;
+}
+@keyframes rotating-text-3 {
+  66% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  99% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@media screen and (max-width: 576px) {
+  .rotating-text-wrapper {
+    font-size: 0.7rem;
+  }
+}
+
+#no-results-container {
+  text-align: center;
+  display: none;
+  margin-top: 20px;
+}
+
+#no-results-msg {
+  font-size: 18px;
+  color: #333;
+}
+
+#giphy-container {
+  margin-top: 10px;
+}
+
+#giphy-container img {
+  max-width: 300px;
 }
