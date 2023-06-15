@@ -41,7 +41,44 @@
     <div class="loader-container">
   <div class="loader"></div>
 </div>
-    
+
+
+
+<div class="modal">
+  <span class="close">&times;</span>
+  <img id="modalImg" class="modal-content">
+</div>
+
+<div class="intro">
+<h1 class="text-glow"></h1>
+
+<h1><span class="text-gradient"></span></h1>
+
+<h1 class="text-glow">
+  <span class="text-gradient">Find the art piece </span> 
+  of your dreams...
+</h1>
+</div>
+<div class="search-container">
+  <input type="text" id="search-input" placeholder="Search for products..." required>
+  <button id="search-button">Search</button>
+</div>
+
+<div class="rotating-text-wrapper">
+  <h2>An extra-ordinary Visual Artist</h2>
+  <h2>Discover a wide range of ART Pieces</h2>
+  <h2>with the one and only Kabonge George</h2>
+</div>
+
+<div class="grid-container" id="products-grid">
+  <!-- Product cards will be dynamically added here -->
+</div>
+<div id="no-results-container">
+  <p id="no-results-msg">No matching products found.</p>
+  <div id="giphy-container"></div>
+</div>
+
+
     <div id="products-list"></div>
     <div class="modal">
         <span class="close">&times;</span>
@@ -67,124 +104,200 @@
         measurementId: "G-0NHWZMJGCR"
       };
       const app = initializeApp(firebaseConfig);
-      const database = getDatabase(app);
-      const productsRef = ref(database, "products");
+const database = getDatabase(app);
+const productsRef = ref(database, "products");
 
-      const loaderContainer = document.querySelector('.loader-container');
-      const loader = document.querySelector('.loader');
-      const productsList = document.getElementById("products-list");
-      const modal = document.querySelector('.modal');
-      const modalImg = document.getElementById("modalImg");
-      const closeBtn = document.querySelector('.close');
+const loaderContainer = document.querySelector('.loader-container');
+const productsList = document.getElementById("products-list");
+const modal = document.querySelector('.modal');
+const modalImg = document.getElementById("modalImg");
+const closeBtn = document.querySelector('.close');
 
+loaderContainer.style.display = "flex"; // show the loader
 
-      loaderContainer.style.display = "flex"; // show the loader
+get(productsRef).then((snapshot) => {
+  const data = snapshot.val();
+  const gridContainer = document.createElement("div");
+  gridContainer.classList.add("products-grid");
+  productsList.appendChild(gridContainer);
 
-      get(productsRef).then((snapshot) => {
-        const data = snapshot.val();
-        const productsList = document.getElementById("products-list");
-        for (let i in data) {
-          const product = data[i];
-          const card = document.createElement("div");
-          card.classList.add("card");
+  let products = Object.values(data); // Convert the snapshot object to an array of products
 
- 
-    
-          const title = document.createElement("h2");
-          title.innerText = product.name;
-          card.appendChild(title);
+  // Function to display products
+  const displayProducts = (products) => {
+    gridContainer.innerHTML = ""; // Clear the grid container
 
-          const desc = document.createElement("p");
-          desc.innerText = product.description;
-          card.appendChild(desc);
+    if (products.length === 0) {
+  const noResultsMsg = document.createElement("p");
+  noResultsMsg.classList.add("no-results-msg");
+  noResultsMsg.innerText = "No matching products found.";
+  gridContainer.appendChild(noResultsMsg);
+}
+ else {
+      products.forEach((product) => {
+        const card = document.createElement("div");
+        card.classList.add("card");
 
-if (desc.offsetHeight > 200) { 
-  const showMoreBtn = document.createElement("button");
-  showMoreBtn.innerText = "Read More";
-  card.appendChild(showMoreBtn);
+        const title = document.createElement("h2");
+        title.innerText = product.name;
+        card.appendChild(title);
 
-  const hideDesc = () => {
-    desc.style.maxHeight = "200px"; // truncate description with CSS
-    showMoreBtn.innerText = "Read More";
-  };
+        const desc = document.createElement("p");
+        desc.innerText = product.description;
+        card.appendChild(desc);
+// Inside the loop where you create the card element
+const quality = document.createElement("div");
+quality.classList.add("quality");
 
-  const showDesc = () => {
-    desc.style.maxHeight = null; // unset height to show full description
-    showMoreBtn.innerText = "Read Less";
-  };
-
-  hideDesc(); // start with truncated description
-
-  showMoreBtn.addEventListener("click", () => {
-    if (showMoreBtn.innerText === "Read More") {
-      showDesc();
-    } else {
-      hideDesc();
-    }
-  });
+for (let i = 0; i < 5; i++) {
+  const starIcon = document.createElement("i");
+  starIcon.classList.add("fas", "fa-star");
+  quality.appendChild(starIcon);
 }
 
+const qualityText = document.createElement("span");
+qualityText.innerText = "High Quality";
+quality.appendChild(qualityText);
 
-          const price = document.createElement("p");
-          price.innerText = `Price: $${product.price}`;
-          card.appendChild(price);
+card.appendChild(quality);
 
-          const img = document.createElement("img");
-img.src = product.image;
-img.alt = product.name;
-img.classList.add("product-img");
-img.addEventListener("click", () => {
-  const modal = document.querySelector(".modal");
-  const modalImg = document.querySelector("#modalImg");
-  modal.style.display = "block";
-  modalImg.src = img.src;
+// Inside the loop where you create the card element
+const satisfactionContainer = document.createElement("div");
+satisfactionContainer.classList.add("satisfaction");
+
+const satisfactionIcon = document.createElement("i");
+satisfactionIcon.classList.add("fas", "fa-thumbs-up");
+
+const satisfactionText = document.createElement("span");
+satisfactionText.innerText = "Satisfaction: " + "100%";
+
+satisfactionContainer.appendChild(satisfactionIcon);
+satisfactionContainer.appendChild(satisfactionText);
+card.appendChild(satisfactionContainer);
+
+// Inside the loop where you create the card element
+const deliveryContainer = document.createElement("div");
+deliveryContainer.classList.add("delivery");
+
+const deliveryIcon = document.createElement("i");
+deliveryIcon.classList.add("fas", "fa-truck");
+
+const deliveryText = document.createElement("span");
+deliveryText.innerText = "Quick Delivery";
+
+deliveryContainer.appendChild(deliveryIcon);
+deliveryContainer.appendChild(deliveryText);
+card.appendChild(deliveryContainer);
+
+        const price = document.createElement("p");
+        price.innerText = `Price: $${product.price}`;
+        card.appendChild(price);
+
+        const img = document.createElement("img");
+        img.src = product.image;
+        img.alt = product.name;
+        img.classList.add("product-img");
+
+        img.addEventListener("click", () => {
+          modal.style.display = "block";
+          modalImg.src = img.src;
+        });
+
+        card.appendChild(img);
+
+        const sendBtn = document.createElement("button");
+sendBtn.innerHTML = `<i class="fab fa-whatsapp"></i> Inquire from Shop`;
+sendBtn.classList.add("send-btn");
+
+sendBtn.addEventListener("click", () => {
+  const message = `Hi, I'm interested in buying ${product.name} at Price: $${product.price}.`;
+  console.log(`Sending message "${message}" to seller`);
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://wa.me/${+256774447277}?text=${encodedMessage}`;
+  window.open(whatsappUrl, '_blank');
 });
-card.appendChild(img);
 
-const modal = document.querySelector(".modal");
-const closeBtn = document.querySelector(".close");
+card.appendChild(sendBtn);
+
+
+        // Inside the loop where you create the card element
+const shareContainer = document.createElement("div");
+shareContainer.classList.add("share");
+
+const shareIcon = document.createElement("i");
+shareIcon.classList.add("fas", "fa-share-alt");
+
+const shareText = document.createElement("span");
+shareText.innerText = "Share Product";
+
+shareContainer.appendChild(shareIcon);
+shareContainer.appendChild(shareText);
+card.appendChild(shareContainer);
+
+// Share button click event
+shareContainer.addEventListener("click", () => {
+  const shareUrl = `https://kabongegeorge.art/product/${product.id}`; // Replace with the actual URL of the product
+  const shareTitle = product.name; // Replace with the actual name of the product
+  const sharedescription = product.description;
+
+  // Check if the Web Share API is available in the browser
+  if (navigator.share) {
+    navigator
+      .share({
+        title: shareTitle,
+        url: shareUrl,
+        description: sharedescription,
+      })
+      .then(() => {
+        console.log("Product shared successfully");
+      })
+      .catch((error) => {
+        console.error("Error sharing product:", error);
+      });
+  } else {
+    console.log("Web Share API is not supported in this browser");
+    // Provide fallback behavior for browsers that do not support the Web Share API
+    // For example, you can open a share dialog with pre-filled data or display a message to the user.
+  }
+});
+
+        gridContainer.appendChild(card);
+      });
+    }
+  };
+
+  displayProducts(products); // Display all products initially
+
+  loaderContainer.style.display = "none"; // hide the loader container
+
+  // Function to filter products based on search input
+  const filterProducts = () => {
+    const searchInput = document.getElementById("search-input");
+    const searchTerm = searchInput.value.toLowerCase();
+
+    const filteredProducts = products.filter((product) => {
+      return product.name.toLowerCase().includes(searchTerm);
+    });
+
+    loaderContainer.style.display = "flex"; // show the loader
+    setTimeout(() => {
+      displayProducts(filteredProducts);
+      loaderContainer.style.display = "none"; // hide the loader
+    }, 1000); // Simulating a delay of 1 second before displaying the filtered products
+  };
+
+  // Search button event listener
+  const searchButton = document.getElementById("search-button");
+  searchButton.addEventListener("click", filterProducts);
+});
+
 closeBtn.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
 
-// Open the Modal
-function openModal(img) {
-  document.getElementById("modalImg").src = img.src;
-  document.querySelector(".modal").style.display = "block";
-}
-
-// Close the Modal
-document.querySelector(".close").addEventListener("click", function() {
-  document.querySelector(".modal").style.display = "none";
-});
-
-
-
-          const messageInput = document.createElement("input");
-messageInput.type = "text";
-messageInput.placeholder = `Hi, I'm interested in buying ${product.name}.`;
-card.appendChild(messageInput);
-
-const sendBtn = document.createElement("button");
-sendBtn.innerText = "Send";
-sendBtn.addEventListener("click", () => {
-  const message = messageInput.value;
-  console.log(`Sending message "${message}" to seller for product "${product.name}"`);
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${+256774447277}?text=${encodedMessage}`;
-  window.open(whatsappUrl, '_blank');
-});
-card.appendChild(sendBtn);
-
-productsList.appendChild(card);
-
-}
-  loaderContainer.style.display = "none"; // hide the loader container
-});
     </script>
-    
-  </body>
+
   <div>
     <footer class="footer-section">
       <div class="container">
@@ -300,4 +413,5 @@ productsList.appendChild(card);
       </div>
   </footer>
     </div>
+  </body>
 </html>
