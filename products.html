@@ -253,47 +253,41 @@ shareContainer.appendChild(shareIcon);
 shareContainer.appendChild(shareText);
 card.appendChild(shareContainer);
 
-// ...
-
 // Share button click event
 shareContainer.addEventListener("click", () => {
-  const shareUrl = `https://kabongegeorge.art/products.html`; // Replace "example.com/search" with the actual URL of the search page
-  const shareTitle = product.name; // Replace with the actual name of the product
-  const shareDescription = product.description;
+  const shareUrl = 'https://kabongegeorge.art/products.html'; // Replace with the actual URL of the page
+  const shareTitle = product.name; // Replace with the actual title of the product
+  const shareText = product.description; // Replace with the actual description of the product
   const shareImage = product.image; // Assuming the product object has an "image" property
 
-  // Check if the Web Share API is available in the browser
   if (navigator.share) {
-    navigator
-      .share({
-        title: shareTitle,
-        url: shareUrl,
-        text: shareDescription,
-      })
-      .then(() => {
-        console.log("Product shared successfully");
+    fetch(shareImage)
+      .then(response => response.blob())
+      .then(blob => {
+        const file = new File([blob], "product_image.jpg", { type: blob.type });
+
+        navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+          files: [file],
+        })
+        .then(() => {
+          console.log('Product shared successfully.');
+        })
+        .catch((error) => {
+          console.error('Error sharing product:', error);
+        });
       })
       .catch((error) => {
-        console.error("Error sharing product:", error);
+        console.error('Error fetching image:', error);
       });
   } else {
-    // Fallback behavior for browsers that do not support the Web Share API
-    const link = document.createElement("a");
-    link.href = shareUrl;
-    link.target = "_blank";
-
-    const image = document.createElement("img");
-    image.src = shareImage;
-    image.alt = shareTitle;
-    link.appendChild(image);
-
-    const description = document.createElement("p");
-    description.innerText = shareDescription;
-    link.appendChild(description);
-
-    link.click();
+    console.log('Web Share API not supported in this browser.');
+    // Provide alternative sharing options or display a message to the user.
   }
 });
+
 
 // ...
 
