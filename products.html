@@ -114,34 +114,20 @@
         measurementId: "G-0NHWZMJGCR"
       };
       const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const productsRef = ref(database, "products");
+  const database = getDatabase(app);
+  const productsRef = ref(database, "products");
 
-const loaderContainer = document.querySelector('.loader-container');
-const productsList = document.getElementById("products-list");
-const modal = document.querySelector('.modal');
-const modalImg = document.getElementById("modalImg");
-const closeBtn = document.querySelector('.close');
+  const loaderContainer = document.querySelector('.loader-container');
+  const productsList = document.getElementById("products-list");
+  const modal = document.querySelector('.modal');
+  const modalImg = document.getElementById("modalImg");
+  const closeBtn = document.querySelector('.close');
 
-loaderContainer.style.display = "flex"; // show the loader
-
-get(productsRef).then((snapshot) => {
-  const data = snapshot.val();
-  const gridContainer = document.createElement("div");
-  gridContainer.classList.add("products-grid");
-  productsList.appendChild(gridContainer);
-
-  let products = Object.values(data); // Convert the snapshot object to an array of products
-
-  // Function to search for products
-  const searchProducts = (query) => {
-    const filteredProducts = products.filter((product) => {
-      return product.name.toLowerCase().includes(query.toLowerCase());
-    });
-
-    displayProducts(filteredProducts);
-  };
-
+  loaderContainer.style.display = "flex"; // show the loader
+// Declare gridContainer outside the displayProducts function
+const gridContainer = document.createElement("div");
+gridContainer.classList.add("products-grid");
+productsList.appendChild(gridContainer);
   // Function to display products
   const displayProducts = (products) => {
     gridContainer.innerHTML = ""; // Clear the grid container
@@ -211,11 +197,13 @@ card.appendChild(deliveryContainer);
         const price = document.createElement("p");
         price.innerText = `Price: $${product.price}`;
         card.appendChild(price);
-
         const img = document.createElement("img");
-        img.src = product.image;
-        img.alt = product.name;
-        img.classList.add("product-img");
+img.src = product.image;
+img.alt = product.name;
+img.classList.add("product-img");
+img.classList.add("same-height-img"); // Add a class for styling
+
+card.appendChild(img);
 
         img.addEventListener("click", () => {
           modal.style.display = "block";
@@ -306,6 +294,40 @@ shareContainer.addEventListener("click", () => {
       });
     }
   };
+get(productsRef).then((snapshot) => {
+  const data = snapshot.val();
+  const gridContainer = document.createElement("div");
+  gridContainer.classList.add("products-grid");
+  productsList.appendChild(gridContainer);
+
+  let products = Object.values(data); // Convert the snapshot object to an array of products
+
+  // Function to search for products
+  const searchProducts = (query) => {
+    const filteredProducts = products.filter((product) => {
+      return product.name.toLowerCase().includes(query.toLowerCase());
+    });
+
+    displayProducts(filteredProducts);
+  };
+  const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+      // Parse the stored products as JSON and use them
+      const products = JSON.parse(storedProducts);
+      displayProducts(products);
+    } else {
+      // Retrieve the products from the Firebase database
+      get(productsRef).then((snapshot) => {
+        const data = snapshot.val();
+        const products = Object.values(data);
+
+        // Store the products in the local storage
+        localStorage.setItem('products', JSON.stringify(products));
+
+        displayProducts(products);
+      });
+    }
+
 
   displayProducts(products); // Display all products initially
 
@@ -398,15 +420,15 @@ shareContainer.addEventListener("click", () => {
                   <div class="col-xl-4 col-lg-4 mb-50">
                       <div class="footer-widget">
                           <div class="footer-logo">
-                              <a href="index.html"><img src="images/4.jpeg" class="img-fluid" alt="kabongegeorge" </a>
+                              <a href="index.html"><img src="images/4.jpeg" class="img-fluid" alt="kabongegeorge"</a>
                           </div>
                           <div class="footer-text">
                               <p> I love exploring different themes using the pointillism style where I put various vibrant dots or strokes of color in most of my paintings. Different hues mostly appear in contrast to one another. I am inspired by day-to-day life experiences which I depict using vibrant dots or strokes of hues on canvas. I use oil paints and acrylics on canvas to portray messages.</p>
                           </div>
                           <div class="footer-social-icon">
                               <span>Follow Me</span>
-                              <a href="https://www.facebook.com/kabonge"><i class="fab fa-facebook-f facebook-bg"></i></a>
-                              <a href="https://www.twitter.com/kabongeart"><i class="fab fa-twitter twitter-bg"></i></a>
+                              <a href="https://www.facebook.com/kabongegeorge"><i class="fab fa-facebook-f facebook-bg"></i></a>
+                              <a href="https://twitter.com/Kabongeart"><i class="fab fa-twitter twitter-bg"></i></a>
                               <a href="https://www.instagram.com/georgekabonge"><i class="fa-brands fa-instagram "></i></a>
                           </div>
                       </div>
