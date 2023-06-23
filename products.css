@@ -735,3 +735,7 @@ color: #878787;
 #giphy-container img {
   max-width: 300px;
 }
+.same-height-img {
+  height: 300px; /* Adjust the height value to your desired value */
+  object-fit: cover; /* This property ensures the image maintains its aspect ratio and covers the entire container */
+}
